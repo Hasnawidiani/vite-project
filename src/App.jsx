@@ -1,33 +1,47 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {nanoid} from 'nanoid'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const DUMMY_TODO = [
+  {
+    id : nanoid(),
+    title : 'Belajar React JS',
+    isCompleted : false
+  }
+]
 
+function App() {
+  const [todos, setTodos] = useState(DUMMY_TODO)
+  const [newTodo, setNewTodo] = useState('')
+
+  function addNewTodo() {
+    const updatedTodos = [...todos]
+    const objTodo = {
+      id : nanoid(),
+      title : newTodo,
+      isCompleted : false
+    }
+
+    updatedTodos.push(objTodo)
+    setTodos(updatedTodos)
+    setNewTodo('')
+  }
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Todo App</h1>
+      <input 
+        type='text'
+        placeholder='Isi Todo disini!'
+        value={newTodo}
+        onChange={event => setNewTodo (event.target.value)} />
+      <button onClick={() => addNewTodo()}>Create</button>
+      <ul>
+        {
+          todos.map(todo => ( 
+            <li key={todo.id}>{todo.title}</li>
+          ))
+        }
+      </ul>
     </>
   )
 }
